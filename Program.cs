@@ -1,5 +1,7 @@
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
+using dotnet.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.OpenApi.Models; // This using statement should now work
@@ -7,7 +9,13 @@ using Microsoft.OpenApi.Models; // This using statement should now work
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddDbContext<BookstoreContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("BookstoreDb")));
+
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(); // This will be configured by ConfigureSwaggerOptions
