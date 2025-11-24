@@ -1,0 +1,37 @@
+# Binaries
+[Bb]in/
+[Oo]bj/
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+
+# IDE-specific folders
+.vs/
+.idea/
+
+# Rider
+*.sln.iml
+
+# Mac
+.DS_Store
+
+# Build results
+[Rr]elease/
+[Dd]ebug/
+x64/
+x86/
+[Aa][Rr][Mm]64/
+
+# Log files
+*.log
+logs/
+
+# Temporary files
+*.swp
+*~
+
+# Secrets
+secrets.json
+appsettings.Development.json
