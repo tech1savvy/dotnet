@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using dotnet.Models;
+using Asp.Versioning;
 
-namespace dotnet.Controllers
+namespace dotnet.Controllers.v1
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class BooksController : ControllerBase
     {
         private static readonly List<Book> _books = new List<Book>
@@ -14,14 +16,14 @@ namespace dotnet.Controllers
             new Book { Id = 3, Title = "1984", Author = "George Orwell" }
         };
 
-        // GET: api/books
+        // GET: api/v1/books
         [HttpGet]
         public ActionResult<IEnumerable<Book>> GetBooks()
         {
             return Ok(_books);
         }
 
-        // GET: api/books/5
+        // GET: api/v1/books/5
         [HttpGet("{id}")]
         public ActionResult<Book> GetBook(int id)
         {
@@ -35,17 +37,17 @@ namespace dotnet.Controllers
             return Ok(book);
         }
 
-        // POST: api/books
+        // POST: api/v1/books
         [HttpPost]
         public ActionResult<Book> PostBook(Book book)
         {
             book.Id = _books.Any() ? _books.Max(b => b.Id) + 1 : 1;
             _books.Add(book);
 
-            return CreatedAtAction(nameof(GetBook), new { id = book.Id }, book);
+            return CreatedAtAction(nameof(GetBook), new { id = book.Id, version = HttpContext.GetRequestedApiVersion()?.ToString() }, book);
         }
 
-        // PUT: api/books/5
+        // PUT: api/v1/books/5
         [HttpPut("{id}")]
         public IActionResult PutBook(int id, Book book)
         {
@@ -66,7 +68,7 @@ namespace dotnet.Controllers
             return NoContent();
         }
 
-        // DELETE: api/books/5
+        // DELETE: api/v1/books/5
         [HttpDelete("{id}")]
         public IActionResult DeleteBook(int id)
         {
