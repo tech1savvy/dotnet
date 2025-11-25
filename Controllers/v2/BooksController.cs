@@ -64,8 +64,6 @@ namespace dotnet.Controllers.v2
             _context.Books.Add(book);
             await _context.SaveChangesAsync();
 
-            // For the POST response, we'll return the created book entity, similar to v1
-            // We need to load the author to return the full object
             await _context.Entry(book).Reference(b => b.Author).LoadAsync();
 
             return CreatedAtAction(nameof(GetBook), new { id = book.Id, version = HttpContext.GetRequestedApiVersion()?.ToString() }, book);

@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Asp.Versioning;
-using Asp.Versioning.ApiExplorer; // Added this using statement
+using Asp.Versioning.ApiExplorer;
 
 public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
 {
@@ -13,8 +13,6 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
 
     public void Configure(SwaggerGenOptions options)
     {
-        // Add a swagger document for each discovered API version
-        // Note: you might choose to skip or document deprecated API versions differently
         foreach (var description in provider.ApiVersionDescriptions)
         {
             options.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description));
